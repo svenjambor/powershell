@@ -1,6 +1,6 @@
 ﻿#Set-ExecutionPolicy RemoteSigned
 $tempDbDataPath = "D:\Data"
-$tempDbLogPath = "D:\Log"
+$tempDbLogPath = "D:\Logs"
 
 $SqlServicesToStart = @(
         "SQL Server (MSSQLSERVER)",
@@ -18,38 +18,42 @@ function check-TemdbFolder {
 
     $success = $true
 
-    write-verbose "Checking for folder '$fullPath'" 
+    write-Host "Checking for folder '$fullPath'" 
 
     if (!(test-path $fullPath)){
-        write-verbose "... folder not found; creating '$fullPath'"
+        write-Host "... folder not found; creating '$fullPath'"
 
         try {    
             New-Item -Path $fullPath -ItemType directory -Force -ErrorAction Stop | Out-Null
-            Write-Verbose "Successfully created folder '$fullPath'"
+            Write-Host "Successfully created folder '$fullPath'"
             $success = $true
 
         } catch {
             Write-Error "Failed to create folder '$fullPath'"
             $success = $false
         }
-    }
+    } else {Write-Host "... folder exists"} 
     return $success
 }
 
-$startSQL = $false
 try {
 
-    $dataPathExists = check-TemdbFolder -fullPath $tempDbDataPath -ErrorAction Stop | Out-Null
-    $logPathExists = check-TemdbFolder -fullPath $tempDbLogPath -ErrorAction Stop | Out-Null
+    $dataPathExists = check-TemdbFolder -fullPath $tempDbDataPath -ErrorAction Stop
+    $logPathExists = check-TemdbFolder -fullPath $tempDbLogPath -ErrorAction Stop
 
-    if($dataPathExists -and $logPathExists) { $startSQL = $true }  
-    } catch {
+    if($dataPathExists -and $logPathExists) { 
+        Write-Host "TempDB folders exist. Starting SQL"
+        foreach($SqlService in $SqlServicesToStart){
+            try{
+                Write-Host "Starting '$SqlService'..."
+                Start-Service -DisplayName $SqlService -ErrorAction Stop
+                Write-Host "... done"
+                
+                } catch {
+                Write-Error "...failed!"
+            }
+          }
+       } 
+} catch {
          Write-Error "Not all folders exist; not starting SQL"
-    }
-
-if($startSQL){
-    Write-Verbose "Starting SQL Services"
-    foreach($SqlService in $SqlServicesToStart){
-    Start-Service -DisplayName $SqlService
-    }
-}
+  }
