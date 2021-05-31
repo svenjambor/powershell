@@ -3,8 +3,9 @@
     Recursively deletes everything in a folder on Azure Files
 .DESCRIPTION
     Azure Files does not have a -force option to delete directories (yet). This script van be used to periodically clean files and subfolders
-.PREREQUISITES 
+
     Script requires az.storage module in Automation Account
+
 .PARAMETER StorageAccountName
     Name of the storage account
 .PARAMETER StorageAccountKey
@@ -28,10 +29,10 @@
 #>
 
 Param (
-    [parameter(mandatory=$true)][string]$StorageAccountName, #Storage account name" 
-    [parameter(mandatory=$true)][string]$StorageAccountKey,  #Storage account primary key"
-    [parameter(mandatory=$true)][string]$ShareName,          #Azure Files Share name
-    [parameter(mandatory=$true)][string]$BaseDirectory       #Directory you want to empty 
+    [parameter(mandatory=$true)][string]$StorageAccountName,
+    [parameter(mandatory=$true)][string]$StorageAccountKey,
+    [parameter(mandatory=$true)][string]$ShareName,
+    [parameter(mandatory=$true)][string]$BaseDirectory
 )
 
 function Recursive-Delete(){
