@@ -25,7 +25,7 @@
     .\Remove-FolderContents.ps1 -StorageAccountName "storageacc" -StorageAccountKey "fehwr347483t34703 [38- o//abQ=="  -ShareName "theshare" -BaseDirectory "temp"
 .ToDo
     - Use automation account with Get-AutomationConnection and use storage account key only as an option if no RunAs account exists
-    - Add option to dela with age of files (min/max age)
+    - Add option to work with age of files (min/max age)
 #>
 
 Param (
