@@ -28,10 +28,10 @@
 #>
 
 Param (
-    [string]$StorageAccountName, #Storage account name" 
-    [string]$StorageAccountKey,  #Storage account primary key"
-    [string]$ShareName,          #Azure Files Share name
-    [string]$BaseDirectory       #Directory you want to empty 
+    [parameter(mandatory=$true)][string]$StorageAccountName, #Storage account name" 
+    [parameter(mandatory=$true)][string]$StorageAccountKey,  #Storage account primary key"
+    [parameter(mandatory=$true)][string]$ShareName,          #Azure Files Share name
+    [parameter(mandatory=$true)][string]$BaseDirectory       #Directory you want to empty 
 )
 
 function Recursive-Delete(){
